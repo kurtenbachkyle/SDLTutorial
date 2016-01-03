@@ -1,6 +1,7 @@
 #include <iostream>
 #include <SDL2/SDL.h>
 #include "res_path.h"
+#include "cleanup.h"
 
 /*
  * Lesson 0: Test to make sure SDL is setup properly
@@ -22,7 +23,7 @@ int main(int, char**){
 
   SDL_Renderer *ren = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
   if(ren == nullptr){
-          SDL_DestroyWindow(win);
+          cleanup(win);
           std::cout << "SDL_CreateRenderer Error: " << SDL_GetError() << std::endl;
           SDL_Quit();
           return 1;
@@ -32,8 +33,7 @@ int main(int, char**){
   SDL_Surface *bmp = SDL_LoadBMP(imagePath.c_str());
 
   if(bmp == nullptr){
-          SDL_DestroyRenderer(ren);
-          SDL_DestroyWindow(win);
+          cleanup(ren, win);
           std::cout << "SDL_LoadBMP Error: " << SDL_GetError() << std::endl;
           SDL_Quit();
           return 1;
@@ -57,9 +57,7 @@ int main(int, char**){
   SDL_Delay(3000);
 
   //Destroying things on quit
-  SDL_DestroyTexture(tex);
-  SDL_DestroyRenderer(ren);
-  SDL_DestroyWindow(win);
+  cleanup(ren, tex, win);
   SDL_Quit();
   return 0;
 }
