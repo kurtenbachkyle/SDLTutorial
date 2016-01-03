@@ -11,7 +11,12 @@ int main(int, char**){
     return 1;
   }
 
-  std::cout << "resource path: " << getResourcePath() << std::endl;
+  // std::cout << "resource path: " << getResourcePath() << std::endl;
+
+  SDL_Window *win = SDL_CreateWindow("Hello World!", 100, 100, 100, 100, SDL_WINDOW_SHOWN);
+  if(win == nullptr){
+    std::cout << "SDL_CreateWindow Error: " << SDL_GetError() << std::endl;
+  }
 
   SDL_Quit();
   return 0;

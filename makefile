@@ -4,7 +4,7 @@ SDL_INCLUDE = -I/usr/local/include
 
 CXXFLAGS = -Wall -c -std=c++11 $(SDL_INCLUDE) -I include
 LDFLAGS = $(SDL_LIB)
-EXE = sdl_lesson0
+EXE = bin/hello_sdl
 
 all: $(EXE)
 
