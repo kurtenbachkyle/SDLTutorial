@@ -97,16 +97,31 @@ int main(int, char**){
 
     bool quit = false;
     SDL_Event e;
+    int x = SCREEN_WIDTH/2; 
+    int y = SCREEN_HEIGHT/2;
     while(!quit){
         SDL_PollEvent(&e);
         
-        if(e.type == SDL_QUIT || e.type == SDL_KEYDOWN || e.type == SDL_MOUSEBUTTONDOWN){
+        if(e.type == SDL_QUIT){
             quit = true;
+        }
+        const Uint8* state = SDL_GetKeyboardState(NULL);
+        if (state[SDL_SCANCODE_RIGHT] ) {
+               x = x+10; 
+        }
+        if (state[SDL_SCANCODE_LEFT] ) {
+               x = x-10; 
+        }
+        if (state[SDL_SCANCODE_UP] ) {
+               y = y-10; 
+        }
+        if (state[SDL_SCANCODE_DOWN] ) {
+               y = y+10; 
         }
         SDL_RenderClear(ren);
         // SDL_RenderCopy(ren, image, NULL, NULL);
         tileTexture(background, ren, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-        renderAtMiddlePoint(image, ren, SCREEN_WIDTH/2, SCREEN_HEIGHT/2);
+        renderAtMiddlePoint(image, ren, x, y);
         // renderAtMiddlePoint(image, ren, 0, 0);
         SDL_RenderPresent(ren);
     }
