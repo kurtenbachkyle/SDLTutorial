@@ -1,4 +1,5 @@
 #include <iostream>
+#include <array>
 #include <SDL2/SDL.h>
 #include "res_path.h"
 #include "cleanup.h"
@@ -40,6 +41,12 @@ void renderTexture(SDL_Texture *tex, SDL_Renderer *ren, int x, int y){
     dst.y = y;
     SDL_QueryTexture(tex, NULL, NULL, &dst.w, &dst.h);
     SDL_RenderCopy(ren, tex, NULL, &dst);
+}
+
+void renderAtMiddlePoint(SDL_Texture *tex, SDL_Renderer *ren, int x, int y){
+    int width, height;
+    SDL_QueryTexture(tex, NULL, NULL, &width, &height);
+    renderTexture(tex, ren, (x-width/2), (y-height/2));
 }
 
 void tileTexture(SDL_Texture *tex, SDL_Renderer *ren, int startx, int starty, int stageWidth, int stageHeight){
@@ -88,12 +95,20 @@ int main(int, char**){
         return 1;
     }
 
-    for( int i = 0; i < 3; i++){
+    bool quit = false;
+    SDL_Event e;
+    while(!quit){
+        SDL_PollEvent(&e);
+        
+        if(e.type == SDL_QUIT || e.type == SDL_KEYDOWN || e.type == SDL_MOUSEBUTTONDOWN){
+            quit = true;
+        }
         SDL_RenderClear(ren);
         // SDL_RenderCopy(ren, image, NULL, NULL);
         tileTexture(background, ren, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+        renderAtMiddlePoint(image, ren, SCREEN_WIDTH/2, SCREEN_HEIGHT/2);
+        // renderAtMiddlePoint(image, ren, 0, 0);
         SDL_RenderPresent(ren);
-        SDL_Delay(1000);
     }
 
     //Destroying things on quit
